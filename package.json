@@ -1,0 +1,80 @@
+{
+  "name": "positron-r-wizard",
+  "displayName": "%display.name%",
+  "description": "%description%",
+  "version": "0.0.1",
+  "publisher": "ntluong95",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ntluong95/positron-r-wizard.git"
+  },
+  "icon": "resources/icon.png",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.99.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:r"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "positron-r-pipe-toggle.toggle",
+        "title": "R Pipe",
+        "when": "editorLangId == r",
+        "actionBarOptions": {
+          "controlType": "toggle",
+          "leftTitle": "%>% pipe",
+          "rightTitle": "|> pipe",
+          "toggled": "config.positron.r.useNativePipe"
+        }
+      }
+    ],
+    "menus": {
+      "editor/actions/left": [
+        {
+          "command": "positron-r-pipe-toggle.toggle",
+          "when": "resourceExtname == .R || resourceExtname == .qmd",
+          "group": "wz@1"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Positron R Wizard",
+      "properties": {
+        "positron.r.pipe": {
+          "type": "string",
+          "default": "%>%",
+          "description": "The R pipe operator to use. This setting is managed by the 'R Pipe' toggle.",
+          "enum": [
+            "%>%",
+            "|>"
+          ]
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.83.0",
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.2",
+    "@types/node": "18.x",
+    "eslint": "^8.50.0",
+    "glob": "^10.3.3",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2",
+    "@vscode/test-electron": "^2.3.4"
+  }
+}

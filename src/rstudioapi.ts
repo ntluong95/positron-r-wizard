@@ -69,13 +69,11 @@ export async function getAddinPickerItems(): Promise<AddinItem[]> {
             # Get all installed packages
             pkgs <- .packages(all.available = TRUE)
             
-            addin_list <- list()
-            
-            for (pkg in pkgs) {
+            process_pkg <- function(pkg) {
                 dcf_path <- system.file("rstudio", "addins.dcf", package = pkg)
                 if (file.exists(dcf_path)) {
                     addins <- read.dcf(dcf_path)
-                    
+                    addin_list <- list()
                     for (i in seq_len(nrow(addins))) {
                         addin <- addins[i, , drop = FALSE]
                         addin_info <- list(
@@ -85,10 +83,16 @@ export async function getAddinPickerItems(): Promise<AddinItem[]> {
                             interactive = if ("Interactive" %in% colnames(addin)) tolower(as.character(addin[1, "Interactive"])) == "true" else FALSE,
                             package = pkg
                         )
-                        addin_list[[length(addin_list) + 1]] <- addin_info
+                        addin_list <- append(addin_list, list(addin_info))
                     }
+                    return(addin_list)
                 }
             }
+
+            # collect and combine non-null addins
+            results <- lapply(pkgs, process_pkg)
+            non_null <- Filter(Negate(is.null), results)
+            addin_list <- if (length(non_null) > 0) do.call(c, non_null) else list()
             
             # Write to temp file
             jsonlite::write_json(addin_list, ${JSON.stringify(tempFile)}, auto_unbox = TRUE)

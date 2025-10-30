@@ -37,7 +37,7 @@
       {
         "command": "positron-r-pipe-toggle.toggle",
         "title": "R Pipe",
-        "when": "editorLangId == r",
+        "when": "editorLangId == r && !config.positron.r.disablePipeUI",
         "actionBarOptions": {
           "controlType": "toggle",
           "leftTitle": "%>% pipe",
@@ -72,7 +72,7 @@
       "editor/actions/right": [
         {
           "command": "positron-r-pipe-toggle.toggle",
-          "when": "resourceExtname == .R",
+          "when": "resourceExtname == .R && !config.positron.r.disablePipeUI",
           "group": "wz@1"
         },
         {

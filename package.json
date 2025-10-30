@@ -2,6 +2,18 @@
   "name": "positron-r-wizard",
   "displayName": "%display.name%",
   "description": "%description%",
+  "keywords": [
+    "r",
+    "pipe",
+    "magrittr",
+    "dplyr",
+    "tidyverse",
+    "rstudio",
+    "vscode",
+    "extension",
+    "wizard",
+    "positron"
+  ],
   "version": "0.0.1",
   "publisher": "ntluong95",
   "repository": {

@@ -71,28 +71,29 @@ export async function getAddinPickerItems(): Promise<AddinItem[]> {
             
             process_pkg <- function(pkg) {
                 dcf_path <- system.file("rstudio", "addins.dcf", package = pkg)
-                if (file.exists(dcf_path)) {
-                    addins <- read.dcf(dcf_path)
-                    addin_list <- list()
-                    for (i in seq_len(nrow(addins))) {
-                        addin <- addins[i, , drop = FALSE]
-                        addin_info <- list(
-                            name = as.character(addin[1, "Name"]),
-                            description = if ("Description" %in% colnames(addin)) as.character(addin[1, "Description"]) else "",
-                            binding = as.character(addin[1, "Binding"]),
-                            interactive = if ("Interactive" %in% colnames(addin)) tolower(as.character(addin[1, "Interactive"])) == "true" else FALSE,
-                            package = pkg
-                        )
-                        addin_list <- append(addin_list, list(addin_info))
-                    }
-                    return(addin_list)
-                }
+                if (!file.exists(dcf_path)) return(NULL)
+                addins <- read.dcf(dcf_path)
+                df <- as.data.frame(addins, stringsAsFactors = FALSE)
+                if (nrow(df) == 0) return(NULL)
+                rows <- split(df, seq_len(nrow(df)))
+                addin_list <- lapply(rows, function(r) {
+                    description <- if ("Description" %in% names(r)) r$Description else ""
+                    interactive <- if ("Interactive" %in% names(r)) tolower(as.character(r$Interactive)) == "true" else FALSE
+                    list(
+                        name = r$Name,
+                        description = description,
+                        binding = r$Binding,
+                        interactive = interactive,
+                        package = pkg
+                    )
+                })
+                return(addin_list)
             }
 
             # collect and combine non-null addins
             results <- lapply(pkgs, process_pkg)
             non_null <- Filter(Negate(is.null), results)
-            addin_list <- if (length(non_null) > 0) do.call(c, non_null) else list()
+            addin_list <- if (length(non_null) > 0) unname(do.call(c, non_null)) else list()
             
             # Write to temp file
             jsonlite::write_json(addin_list, ${JSON.stringify(tempFile)}, auto_unbox = TRUE)

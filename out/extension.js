@@ -53,6 +53,43 @@ async function syncBoolFromString() {
     }
     isChanging = false;
 }
+async function formatPipesInDocument() {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        vscode.window.showErrorMessage("No active editor found");
+        return;
+    }
+    const document = editor.document;
+    if (document.languageId !== "r") {
+        vscode.window.showWarningMessage("This command only works with R files");
+        return;
+    }
+    const targetPipe = getPipeString();
+    const sourcePipe = targetPipe === "|>" ? "%>%" : "|>";
+    const text = document.getText();
+    // Check if there are any pipes to replace
+    if (!text.includes(sourcePipe)) {
+        vscode.window.showInformationMessage(`No ${sourcePipe} pipes found to replace`);
+        return;
+    }
+    // Use regex to replace all occurrences of the source pipe
+    // We need to escape special characters for regex
+    const escapedSourcePipe = sourcePipe.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(escapedSourcePipe, "g");
+    const newText = text.replace(regex, targetPipe);
+    // Apply the edit
+    const fullRange = new vscode.Range(document.positionAt(0), document.positionAt(text.length));
+    const edit = new vscode.WorkspaceEdit();
+    edit.replace(document.uri, fullRange, newText);
+    const success = await vscode.workspace.applyEdit(edit);
+    if (success) {
+        const count = (text.match(regex) || []).length;
+        vscode.window.showInformationMessage(`Replaced ${count} occurrence(s) of ${sourcePipe} with ${targetPipe}`);
+    }
+    else {
+        vscode.window.showErrorMessage("Failed to format pipes in document");
+    }
+}
 function activate(context) {
     // Initial sync
     syncBoolFromString();
@@ -66,8 +103,13 @@ function activate(context) {
     const addinCommand = vscode.commands.registerCommand("r.launchAddinPicker", async () => {
         await (0, rstudioapi_1.launchAddinPicker)();
     });
+    // Register format pipes command
+    const formatPipesCommand = vscode.commands.registerCommand("positron-r-wizard.formatPipes", async () => {
+        await formatPipesInDocument();
+    });
     context.subscriptions.push(toggleCommand);
     context.subscriptions.push(addinCommand);
+    context.subscriptions.push(formatPipesCommand);
     // Listen for configuration changes
     context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(async (e) => {
         if (e.affectsConfiguration(USE_NATIVE_PIPE_SETTING)) {

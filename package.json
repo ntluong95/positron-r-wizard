@@ -2,7 +2,19 @@
   "name": "positron-r-wizard",
   "displayName": "%display.name%",
   "description": "%description%",
-  "version": "0.0.1",
+  "keywords": [
+    "r",
+    "pipe",
+    "magrittr",
+    "dplyr",
+    "tidyverse",
+    "rstudio",
+    "vscode",
+    "extension",
+    "wizard",
+    "positron"
+  ],
+  "version": "0.0.2",
   "publisher": "ntluong95",
   "repository": {
     "type": "git",
@@ -43,6 +55,17 @@
           "controlType": "button",
           "displayTitle": true
         }
+      },
+      {
+        "command": "positron-r-wizard.formatPipes",
+        "title": "Format Pipes",
+        "category": "R",
+        "when": "editorLangId == r",
+        "icon": "$(symbol-keyword)",
+        "actionBarOptions": {
+          "controlType": "button",
+          "displayTitle": true
+        }
       }
     ],
     "menus": {
@@ -51,6 +74,11 @@
           "command": "positron-r-pipe-toggle.toggle",
           "when": "resourceExtname == .R",
           "group": "wz@1"
+        },
+        {
+          "command": "positron-r-wizard.formatPipes",
+          "when": "resourceExtname == .R",
+          "group": "wz@3"
         }
       ],
       "editor/actions/left": [
@@ -72,6 +100,11 @@
             "%>%",
             "|>"
           ]
+        },
+        "positron.r.useNativePipe": {
+          "type": "boolean",
+          "default": false,
+          "description": "Use native R pipe (|>) instead of magrittr pipe (%>%). This setting is synchronized with positron.r.pipe."
         }
       }
     }

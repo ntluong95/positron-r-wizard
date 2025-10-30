@@ -23,10 +23,23 @@ Usage:
 
 Note: The addin list is generated dynamically by running a small R snippet that inspects installed packages' `rstudio/addins.dcf` files and writes the result to a temporary JSON file.
 
+## Format Pipes
+
+Automatically replaces all pipe operators in the current R file to match your workspace pipe setting.
+
+- Command: `positron-r-wizard.formatPipes` ("R: Format Pipes")
+- Replaces all `%>%` with `|>` (or vice versa) based on your `positron.r.pipe` setting.
+- Shows a count of replacements made.
+
+Usage:
+
+1. Open an R file with pipe operators.
+2. Run the command via the command palette (Ctrl+Shift+P / Cmd+Shift+P).
+3. All pipes in the document will be replaced to match your workspace setting.
+
 ## 💡 Future Ideas
 
 - [ ] Add-in picker UI improvements (package separation).
-- [ ] Format document respecting the selected pipe style.
 
 ## License
 

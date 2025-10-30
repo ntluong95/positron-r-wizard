@@ -165,7 +165,7 @@ export async function launchAddinPicker(): Promise<void> {
         // Execute the addin
         await sendCodeToRTerminal(
             `${selected.package}::${selected.binding}()`,
-            false  // focus = false to execute silently
+            true  // focus = true to execute interactively
         );
     }
 }

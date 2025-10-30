@@ -1,17 +1,12 @@
-# Positron R Wizard
+## Pipe Toggler
 
 This extension provides a convenient way to toggle the R pipe operator used in Positron, switching between the `magrittr` pipe `%>%` and the native R pipe `|>`.
-
-## Features
 
 - Adds a toggle button to the Action Bar to quickly switch between pipe operators.
 - Synchronizes a boolean setting `positron.r.useNativePipe` with Positron's string setting `positron.r.pipe`.
 - Changes are applied at the workspace level.
 
-## Usage
-
-1.  Click the "R Pipe" toggle in the Action Bar to switch between `magrittr %>%` and `base |>`.
-2.  The setting is written to your workspace's `.vscode/settings.json` file
+![](https://raw.githubusercontent.com/ntluong95/positron-r-wizard/refs/heads/main/resources/screenshot.png)
 
 ## RStudio Addin Picker
 
@@ -28,23 +23,10 @@ Usage:
 
 Note: The addin list is generated dynamically by running a small R snippet that inspects installed packages' `rstudio/addins.dcf` files and writes the result to a temporary JSON file.
 
-## Development / Build
+## 💡 Future Ideas
 
-Quick commands (PowerShell):
-
-```powershell
-cd "d:\04 EXPERIMENTS\positron-r-wizard"
-npx tsc --noEmit   # TypeScript typecheck
-npm run build      # if you have a build script; otherwise use tsc
-npm install        # install dependencies
-npx vsce package    # create a .vsix package for installation
-```
-
-Make sure Positron and an R runtime are available when testing the addin picker feature.
-
-## Clean up performed
-
-Recent cleanup in `src/` consolidated addin-related helpers into `src/rstudioapi.ts` and removed several now-unused helper files (`src/util.ts`, `src/session.ts`, `src/rTerminal.ts`). The extension was verified to compile with `npx tsc`.
+- [ ] Add-in picker UI improvements (package separation).
+- [ ] Format document respecting the selected pipe style.
 
 ## License
 

@@ -64,6 +64,7 @@ export async function getAddinPickerItems(): Promise<AddinItem[]> {
     console.log('[getAddinPickerItems] Temp file:', tempFile);
 
     const rCode = `
+    (function() {
         tryCatch({
             # Get all installed packages
             pkgs <- .packages(all.available = TRUE)
@@ -95,6 +96,7 @@ export async function getAddinPickerItems(): Promise<AddinItem[]> {
         }, error = function(e) {
             cat("Error loading addins:", conditionMessage(e), "\\n")
         })
+    })();
     `.trim();
 
     try {

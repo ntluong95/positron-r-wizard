@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import { launchAddinPicker } from "./rstudioapi";
 
 const R_PIPE_SETTING = "positron.r.pipe";
 const USE_NATIVE_PIPE_SETTING = "positron.r.useNativePipe";
@@ -79,7 +80,16 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  // Register RStudio addin picker command
+  const addinCommand = vscode.commands.registerCommand(
+    "r.launchAddinPicker",
+    async () => {
+      await launchAddinPicker();
+    }
+  );
+
   context.subscriptions.push(toggleCommand);
+  context.subscriptions.push(addinCommand);
 
   // Listen for configuration changes
   context.subscriptions.push(
@@ -93,4 +103,4 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-export function deactivate() {}
+export function deactivate() { }

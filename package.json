@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/ntluong95/positron-r-wizard.git"
   },
-  "icon": "resources/icon.png",
+  "icon": "resources/icon-clean.png",
   "license": "MIT",
   "engines": {
     "vscode": "^1.99.0"
@@ -32,14 +32,32 @@
           "rightTitle": "|> pipe",
           "toggled": "config.positron.r.useNativePipe"
         }
+      },
+      {
+        "command": "r.launchAddinPicker",
+        "title": "Launch RStudio Addin",
+        "category": "R",
+        "when": "editorLangId == r",
+        "icon": "$(tools)",
+        "actionBarOptions": {
+          "controlType": "button",
+          "displayTitle": true
+        }
       }
     ],
     "menus": {
-      "editor/actions/left": [
+      "editor/actions/right": [
         {
           "command": "positron-r-pipe-toggle.toggle",
-          "when": "resourceExtname == .R || resourceExtname == .qmd",
+          "when": "resourceExtname == .R",
           "group": "wz@1"
+        }
+      ],
+      "editor/actions/left": [
+        {
+          "command": "r.launchAddinPicker",
+          "when": "resourceExtname == .R",
+          "group": "wz@2"
         }
       ]
     },
@@ -67,14 +85,18 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.83.0",
+    "@types/fs-extra": "^11.0.4",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.2",
-    "@types/node": "18.x",
-    "eslint": "^8.50.0",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.99.0",
+    "@vscode/test-electron": "^2.3.4",
+    "eslint": "^9.21.0",
     "glob": "^10.3.3",
     "mocha": "^10.2.0",
-    "typescript": "^5.2.2",
-    "@vscode/test-electron": "^2.3.4"
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "fs-extra": "^11.3.2"
   }
 }

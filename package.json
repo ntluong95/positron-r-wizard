@@ -105,6 +105,11 @@
           "type": "boolean",
           "default": false,
           "description": "Use native R pipe (|>) instead of magrittr pipe (%>%). This setting is synchronized with positron.r.pipe."
+        },
+        "positron.r.disablePipeUI": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable the R Pipe toggle button in the editor action bar."
         }
       }
     }

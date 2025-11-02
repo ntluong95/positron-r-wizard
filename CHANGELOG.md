@@ -2,6 +2,8 @@
 
 ## 0.0.4
 
+- Fix: R Addin Picker now respects user preference to echo addin invocation code to R console.
+
 ## 0.0.3
 
 - Add configuration option to disable pipe UI.

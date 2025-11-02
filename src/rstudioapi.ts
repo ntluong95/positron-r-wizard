@@ -363,13 +363,13 @@ export async function sendCodeToRTerminal(
   // Signature: executeCode(languageId, code, focus, terminal?, mode?, ???, observer?)
   try {
     // Check if user wants to echo code to console
-    const config = workspace.getConfiguration("positron-r-wizard");
-    const echoCode = config.get<boolean>("echoAddinCode", false);
+    const config = workspace.getConfiguration();
+    const echoCode = config.get<boolean>("positron-r-wizard.echoAddinCode", false);
 
-    // Override focus based on user preference: if echoCode is true, use Interactive mode to show code
-    const shouldFocus = echoCode ? true : focus;
+    // Override focus based on user preference: if echoCode is false, use Silent mode to hide code
+    const shouldFocus = echoCode ? focus : false;
 
-    // If mode not provided, default based on focus
+    // If mode not provided, default based on shouldFocus
     const executionMode =
       mode ??
       (shouldFocus

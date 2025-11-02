@@ -56,30 +56,36 @@ async function getAddinPickerItems() {
     const tempFile = path.join(tempDir, `rstudio_addins_${Date.now()}.json`);
     console.log('[getAddinPickerItems] Temp file:', tempFile);
     const rCode = `
+    (function() {
         tryCatch({
             # Get all installed packages
             pkgs <- .packages(all.available = TRUE)
             
-            addin_list <- list()
-            
-            for (pkg in pkgs) {
+            process_pkg <- function(pkg) {
                 dcf_path <- system.file("rstudio", "addins.dcf", package = pkg)
-                if (file.exists(dcf_path)) {
-                    addins <- read.dcf(dcf_path)
-                    
-                    for (i in seq_len(nrow(addins))) {
-                        addin <- addins[i, , drop = FALSE]
-                        addin_info <- list(
-                            name = as.character(addin[1, "Name"]),
-                            description = if ("Description" %in% colnames(addin)) as.character(addin[1, "Description"]) else "",
-                            binding = as.character(addin[1, "Binding"]),
-                            interactive = if ("Interactive" %in% colnames(addin)) tolower(as.character(addin[1, "Interactive"])) == "true" else FALSE,
-                            package = pkg
-                        )
-                        addin_list[[length(addin_list) + 1]] <- addin_info
-                    }
-                }
+                if (!file.exists(dcf_path)) return(NULL)
+                addins <- read.dcf(dcf_path)
+                df <- as.data.frame(addins, stringsAsFactors = FALSE)
+                if (nrow(df) == 0) return(NULL)
+                rows <- split(df, seq_len(nrow(df)))
+                addin_list <- lapply(rows, function(r) {
+                    description <- if ("Description" %in% names(r)) r$Description else ""
+                    interactive <- if ("Interactive" %in% names(r)) tolower(as.character(r$Interactive)) == "true" else FALSE
+                    list(
+                        name = r$Name,
+                        description = description,
+                        binding = r$Binding,
+                        interactive = interactive,
+                        package = pkg
+                    )
+                })
+                return(addin_list)
             }
+
+            # collect and combine non-null addins
+            results <- lapply(pkgs, process_pkg)
+            non_null <- Filter(Negate(is.null), results)
+            addin_list <- if (length(non_null) > 0) unname(do.call(c, non_null)) else list()
             
             # Write to temp file
             jsonlite::write_json(addin_list, ${JSON.stringify(tempFile)}, auto_unbox = TRUE)
@@ -87,6 +93,7 @@ async function getAddinPickerItems() {
         }, error = function(e) {
             cat("Error loading addins:", conditionMessage(e), "\\n")
         })
+    })();
     `.trim();
     try {
         // Execute the R code to generate the JSON file

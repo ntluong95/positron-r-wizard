@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { window, workspace, QuickPickItem, QuickInputButton, ConfigurationTarget, ThemeIcon } from 'vscode';
-import * as positron from 'positron';
+import { tryAcquirePositronApi } from '@posit-dev/positron';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
@@ -9,7 +9,9 @@ import * as os from 'os';
 // Helper functions
 async function isRSessionActive(): Promise<boolean> {
     try {
-        const sessions = await positron.runtime.getActiveSessions();
+        const api = tryAcquirePositronApi();
+        if (!api) return false;
+        const sessions = await api.runtime.getActiveSessions();
         return sessions.some((s: any) => s && s.runtimeMetadata.languageId === 'r');
     } catch {
         return false;
@@ -18,9 +20,14 @@ async function isRSessionActive(): Promise<boolean> {
 
 async function runTextInTerm(code: string, focus: boolean = false): Promise<void> {
     try {
-        // positron.runtime.executeCode(languageId, code, focus, terminal?, mode?, ???, observer?)
-        const mode = focus ? positron.RuntimeCodeExecutionMode.Interactive : positron.RuntimeCodeExecutionMode.Silent;
-        await positron.runtime.executeCode('r', code, focus, undefined, mode);
+        // Acquire Positron API and execute (safe no-op if not available)
+        const api = tryAcquirePositronApi();
+        if (!api) {
+            void window.showErrorMessage('Positron API not available: cannot execute code in Positron runtime.');
+            return;
+        }
+        const mode = focus ? api.RuntimeCodeExecutionMode.Interactive : api.RuntimeCodeExecutionMode.Silent;
+        await api.runtime.executeCode('r', code, focus, undefined, mode);
         console.info('[rTerminal] Code executed:', code);
     } catch (error) {
         console.error('[rTerminal] Error executing code:', error);
@@ -294,15 +301,21 @@ export async function sendCodeToRTerminal(
     // compatibility with callers that pass runtime options (mode/observer).
     // Signature: executeCode(languageId, code, focus, terminal?, mode?, ???, observer?)
     try {
+        const api = tryAcquirePositronApi();
+        if (!api) {
+            void window.showErrorMessage('Positron API not available: cannot execute code in Positron runtime.');
+            return;
+        }
+
         // If mode not provided, default based on focus
-        const executionMode = mode ?? (focus ? positron.RuntimeCodeExecutionMode.Interactive : positron.RuntimeCodeExecutionMode.Silent);
+        const executionMode = mode ?? (focus ? api.RuntimeCodeExecutionMode.Interactive : api.RuntimeCodeExecutionMode.Silent);
 
         if (typeof observer !== 'undefined') {
             // Call with observer
-            await positron.runtime.executeCode('r', code, focus, undefined, executionMode, undefined, observer);
+            await api.runtime.executeCode('r', code, focus, undefined, executionMode, undefined, observer);
         } else {
             // Call without observer
-            await positron.runtime.executeCode('r', code, focus, undefined, executionMode);
+            await api.runtime.executeCode('r', code, focus, undefined, executionMode);
         }
 
         console.info('[sendCodeToRTerminal] Executed:', code);

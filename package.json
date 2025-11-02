@@ -72,19 +72,19 @@
       "editor/actions/right": [
         {
           "command": "positron-r-pipe-toggle.toggle",
-          "when": "resourceExtname == .R && !config.positron.r.disablePipeUI",
+          "when": "editorLangId == r && !config.positron.r.disablePipeUI",
           "group": "wz@1"
         },
         {
           "command": "positron-r-wizard.formatPipes",
-          "when": "resourceExtname == .R  && !config.positron.r.disablePipeUI",
+          "when": "editorLangId == r && !config.positron.r.disablePipeUI",
           "group": "wz@3"
         }
       ],
       "editor/actions/left": [
         {
           "command": "r.launchAddinPicker",
-          "when": "resourceExtname == .R",
+          "when": "editorLangId == r",
           "group": "wz@2"
         }
       ]
@@ -110,6 +110,11 @@
           "type": "boolean",
           "default": false,
           "description": "Disable the R Pipe toggle button in the editor action bar."
+        },
+        "positron-r-wizard.echoAddinCode": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, addin invocation code will be printed to the R console before execution."
         }
       }
     }

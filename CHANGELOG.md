@@ -3,7 +3,8 @@
 ## 0.0.3
 
 - Add configuration option to disable pipe UI.
-- Set addin execution to interactive
+- Save recent addins to workspace settings only if settings are registered.
+- Echo addin invocation code to R console if configured.
 
 ## 0.0.2
 

@@ -135,7 +135,7 @@ export function activate(context: vscode.ExtensionContext) {
   const addinCommand = vscode.commands.registerCommand(
     "r.launchAddinPicker",
     async () => {
-      await launchAddinPicker();
+      await launchAddinPicker(context);
     }
   );
 

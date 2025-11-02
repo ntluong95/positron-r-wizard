@@ -39,7 +39,7 @@ Usage:
 
 ## 💡 Future Ideas
 
-- [ ] Add-in picker UI improvements (package separation).
+- NA
 
 ## License
 

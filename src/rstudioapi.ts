@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { window, QuickPickItem } from 'vscode';
+import { window, workspace, QuickPickItem, QuickInputButton, ConfigurationTarget, ThemeIcon } from 'vscode';
 import * as positron from 'positron';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -154,27 +154,134 @@ export async function launchAddinPicker(): Promise<void> {
     }
 
     // Get addins
-    const items = await getAddinPickerItems();
+    let items = await getAddinPickerItems();
 
     if (items.length === 0) {
         void window.showInformationMessage('No RStudio addins found. Install packages with addins to use this feature.');
         return;
     }
 
-    // Show quick pick
-    const selected = await window.showQuickPick(items, {
-        placeHolder: 'Select an RStudio addin to run',
-        matchOnDescription: true,
-        matchOnDetail: true
+    // Build grouped QuickPick with separators by package and a refresh button
+    const qp = window.createQuickPick<AddinItem>();
+    qp.placeholder = 'Select an RStudio addin to run';
+    qp.matchOnDescription = true;
+    qp.matchOnDetail = true;
+
+    const refreshButton: QuickInputButton = { iconPath: new ThemeIcon('refresh'), tooltip: 'Refresh addin list' };
+    qp.buttons = [refreshButton];
+
+    // Recently used persistence key
+    function recentConfigKey() { return 'recentAddins'; }
+
+    function getRecentKeys(): string[] {
+        const cfg = workspace.getConfiguration('positron-r-wizard');
+        return cfg.get<string[]>(recentConfigKey(), []);
+    }
+
+    async function pushRecentKey(key: string, max = 10) {
+        const cfg = workspace.getConfiguration('positron-r-wizard');
+        const keys = cfg.get<string[]>(recentConfigKey(), []) || [];
+        const idx = keys.indexOf(key);
+        if (idx !== -1) keys.splice(idx, 1);
+        keys.unshift(key);
+        if (keys.length > max) keys.splice(max);
+        await cfg.update(recentConfigKey(), keys, ConfigurationTarget.Workspace);
+    }
+
+    function buildItems(list: AddinItem[]) {
+        const byPkg: Record<string, AddinItem[]> = {};
+        for (const it of list) {
+            const pkg = it.package || '<unknown>';
+            if (!byPkg[pkg]) byPkg[pkg] = [];
+            byPkg[pkg].push(it);
+        }
+
+        const out: any[] = [];
+
+        const recentKeys = getRecentKeys();
+        const recentItems: AddinItem[] = [];
+
+        // no-op loop removed
+
+        // build recent items preserving order from recentKeys
+        for (const rk of recentKeys) {
+            const found = list.find(l => `${l.package}::${l.binding}` === rk);
+            if (found) recentItems.push(found);
+        }
+
+        if (recentItems.length > 0) {
+            out.push({ label: `Recently used (${recentItems.length})`, kind: -1 } as any);
+            for (const a of recentItems) {
+                out.push({ label: a.name, description: a.description || '', detail: `${a.package}::${a.binding}`, name: a.name, package: a.package, binding: a.binding, interactive: a.interactive } as AddinItem);
+            }
+        }
+
+        // Sort packages alphabetically for the remaining items
+        for (const pkg of Object.keys(byPkg).sort((a, b) => a.localeCompare(b))) {
+            const group = byPkg[pkg];
+            if (group.length === 0) continue;
+            out.push({ label: `${pkg} (${group.length})`, kind: -1 } as any);
+            // sort addins by name
+            group.sort((x, y) => (x.name || x.label || '').localeCompare(y.name || y.label || ''));
+            for (const a of group) {
+                out.push({
+                    label: a.name,
+                    description: a.description || '',
+                    detail: `${a.package}::${a.binding}`,
+                    name: a.name,
+                    package: a.package,
+                    binding: a.binding,
+                    interactive: a.interactive
+                } as AddinItem);
+            }
+        }
+
+        return out;
+    }
+
+    qp.items = buildItems(items);
+
+    // When user triggers refresh button, reload addins
+    qp.onDidTriggerButton(async (btn) => {
+        if (btn === refreshButton) {
+            qp.busy = true;
+            try {
+                items = await getAddinPickerItems();
+                qp.items = buildItems(items);
+            } catch (err) {
+                console.error('[launchAddinPicker] Refresh error:', err);
+                void window.showErrorMessage('Failed to refresh addin list');
+            } finally {
+                qp.busy = false;
+            }
+        }
     });
 
-    if (selected) {
-        // Execute the addin
-        await sendCodeToRTerminal(
-            `${selected.package}::${selected.binding}()`,
-            true  // focus = true to execute interactively
-        );
-    }
+    // Provide a lightweight preview when active item changes (show description in an info message non-intrusively)
+    let lastPreview: string | undefined;
+    qp.onDidChangeActive((active) => {
+        if (!active || active.length === 0) return;
+        const sel = active[0];
+        const preview = sel.description || sel.detail || '';
+        // Avoid spamming the UI with repeated identical previews
+        if (preview && preview !== lastPreview) {
+            lastPreview = preview;
+            // set the value of the placeholder briefly to surface details, non-blocking
+            qp.title = sel.detail || '';
+        }
+    });
+
+    qp.onDidAccept(async () => {
+        const selected = qp.selectedItems[0];
+        if (selected) {
+            qp.hide();
+            await pushRecentKey(`${selected.package}::${selected.binding}`);
+            await sendCodeToRTerminal(`${selected.package}::${selected.binding}()`, true);
+        }
+    });
+
+    qp.onDidHide(() => qp.dispose());
+    qp.show();
 }
 
 export async function sendCodeToRTerminal(

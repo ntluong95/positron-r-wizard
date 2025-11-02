@@ -12,4 +12,4 @@
 ## 0.1.0
 
 - Initial release with R pipe toggle feature.
-- Added: RStudio Addin Picker (`r.launchAddinPicker`) — lists installed RStudio addins and executes the selected addin in the active R session.
+- Added: R Addin Picker (`r.launchAddinPicker`) — lists installed R addins and executes the selected addin in the active R session.

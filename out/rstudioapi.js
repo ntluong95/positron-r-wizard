@@ -148,7 +148,7 @@ async function launchAddinPicker() {
     });
     if (selected) {
         // Execute the addin
-        await sendCodeToRTerminal(`${selected.package}::${selected.binding}()`, false // focus = false to execute silently
+        await sendCodeToRTerminal(`${selected.package}::${selected.binding}()`, true // focus = true to execute interactively
         );
     }
 }

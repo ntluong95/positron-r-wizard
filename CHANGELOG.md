@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.0.4
+
 ## 0.0.3
 
 - Add configuration option to disable pipe UI.

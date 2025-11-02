@@ -45,7 +45,7 @@ update_addin_registry <- function(addin_registry) {
                                 "addins.dcf file for ",
                                 package,
                                 " could not be read from R library. ",
-                                "The RStudio addin picker will not ",
+                                "The R addin picker will not ",
                                 "contain it's addins"
                             )
 

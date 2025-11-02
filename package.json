@@ -14,7 +14,7 @@
     "wizard",
     "positron"
   ],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "ntluong95",
   "repository": {
     "type": "git",
@@ -47,7 +47,7 @@
       },
       {
         "command": "r.launchAddinPicker",
-        "title": "Launch RStudio Addin",
+        "title": "Launch R Addin",
         "category": "R",
         "when": "editorLangId == r",
         "icon": "$(tools)",
@@ -72,19 +72,19 @@
       "editor/actions/right": [
         {
           "command": "positron-r-pipe-toggle.toggle",
-          "when": "resourceExtname == .R && !config.positron.r.disablePipeUI",
+          "when": "editorLangId == r && !config.positron.r.disablePipeUI",
           "group": "wz@1"
         },
         {
           "command": "positron-r-wizard.formatPipes",
-          "when": "resourceExtname == .R",
+          "when": "editorLangId == r && !config.positron.r.disablePipeUI",
           "group": "wz@3"
         }
       ],
       "editor/actions/left": [
         {
           "command": "r.launchAddinPicker",
-          "when": "resourceExtname == .R",
+          "when": "editorLangId == r",
           "group": "wz@2"
         }
       ]
@@ -110,6 +110,11 @@
           "type": "boolean",
           "default": false,
           "description": "Disable the R Pipe toggle button in the editor action bar."
+        },
+        "positron-r-wizard.echoAddinCode": {
+          "type": "boolean",
+          "default": false,
+          "description": "When enabled, addin invocation code will be printed to the R console before execution."
         }
       }
     }
@@ -123,11 +128,14 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@posit-dev/positron": "^0.1.8",
     "@types/fs-extra": "^11.0.4",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.2",
     "@types/node": "20.x",
     "@types/vscode": "^1.99.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.2",
+    "@typescript-eslint/parser": "^8.46.2",
     "@vscode/test-electron": "^2.3.4",
     "eslint": "^9.21.0",
     "glob": "^10.3.3",

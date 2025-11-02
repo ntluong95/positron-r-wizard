@@ -123,6 +123,7 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
+    "@posit-dev/positron": "^0.1.8",
     "@types/fs-extra": "^11.0.4",
     "@types/glob": "^8.1.0",
     "@types/mocha": "^10.0.2",

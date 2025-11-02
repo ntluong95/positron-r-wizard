@@ -14,7 +14,7 @@
     "wizard",
     "positron"
   ],
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "ntluong95",
   "repository": {
     "type": "git",
@@ -47,7 +47,7 @@
       },
       {
         "command": "r.launchAddinPicker",
-        "title": "Launch RStudio Addin",
+        "title": "Launch R Addin",
         "category": "R",
         "when": "editorLangId == r",
         "icon": "$(tools)",

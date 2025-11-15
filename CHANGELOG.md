@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.5
+
+- Fix debugging
+
 ## 0.0.4
 
 - Fix: R Addin Picker now respects user preference to echo addin invocation code to R console.

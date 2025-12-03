@@ -5,6 +5,8 @@
   "keywords": [
     "r",
     "pipe",
+    "syntaxes",
+    "textmate",
     "magrittr",
     "dplyr",
     "tidyverse",
@@ -14,7 +16,7 @@
     "wizard",
     "positron"
   ],
-  "version": "0.0.5",
+  "version": "0.0.6",
   "publisher": "ntluong95",
   "repository": {
     "type": "git",
@@ -33,15 +35,48 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "r",
+        "aliases": [
+          "R",
+          "r"
+        ],
+        "extensions": [
+          ".r",
+          ".R",
+          "Rprofile"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "r",
+        "scopeName": "source.r",
+        "path": "./syntaxes/r.tmLanguage.json"
+      }
+    ],
     "commands": [
+      {
+        "command": "positron-r-wizard.formatPipes",
+        "title": "Format Pipe",
+        "category": "R",
+        "when": "editorLangId == r",
+        "icon": "$(symbol-keyword)",
+        "actionBarOptions": {
+          "controlType": "button",
+          "displayTitle": true
+        }
+      },
       {
         "command": "positron-r-pipe-toggle.toggle",
         "title": "R Pipe",
         "when": "editorLangId == r && !config.positron.r.disablePipeUI",
         "actionBarOptions": {
           "controlType": "toggle",
-          "leftTitle": "%>% pipe",
-          "rightTitle": "|> pipe",
+          "leftTitle": "%>%",
+          "rightTitle": "|>",
           "toggled": "config.positron.r.useNativePipe"
         }
       },
@@ -55,30 +90,19 @@
           "controlType": "button",
           "displayTitle": true
         }
-      },
-      {
-        "command": "positron-r-wizard.formatPipes",
-        "title": "Format Pipes",
-        "category": "R",
-        "when": "editorLangId == r",
-        "icon": "$(symbol-keyword)",
-        "actionBarOptions": {
-          "controlType": "button",
-          "displayTitle": true
-        }
       }
     ],
     "menus": {
       "editor/actions/right": [
         {
-          "command": "positron-r-pipe-toggle.toggle",
-          "when": "editorLangId == r && !config.positron.r.disablePipeUI",
-          "group": "wz@1"
-        },
-        {
           "command": "positron-r-wizard.formatPipes",
           "when": "editorLangId == r && !config.positron.r.disablePipeUI",
           "group": "wz@3"
+        },
+        {
+          "command": "positron-r-pipe-toggle.toggle",
+          "when": "editorLangId == r && !config.positron.r.disablePipeUI",
+          "group": "wz@4"
         }
       ],
       "editor/actions/left": [

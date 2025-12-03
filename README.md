@@ -37,6 +37,20 @@ Usage:
 2. Run the command via the command palette (Ctrl+Shift+P / Cmd+Shift+P).
 3. All pipes in the document will be replaced to match your workspace setting.
 
+## R Enhanced Syntax (Extended TextMate Grammar)
+
+This extension provides enhanced syntax highlighting for the R language in Positron by integrating a heavily expanded and modernized TextMate grammar. It extends the default R grammar with improved support for:
+
+- Built-in R functions (base, graphics, stats, utils, grDevices, methods)
+- Namespace highlighting for pkg::fun, such as dplyr::select(), ggplot2::ggplot()
+- $ accessor highlighting for lists, environments, S3 objects, such as df$column, list_obj$nested$element
+- tidyverse-style operators and helper functions
+- Backtick-quoted identifiers
+- Raw strings (r"{ ... }", r"[...]", etc.)
+- Expanded roxygen2 highlighting
+- Markdown support inside roxygen comments
+- More complete keyword and constant detection
+
 ## 💡 Future Ideas
 
 - NA
@@ -44,3 +58,6 @@ Usage:
 ## License
 
 This project is licensed under the terms in the `LICENSE` file.
+
+
+

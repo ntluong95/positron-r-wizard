@@ -1,20 +1,3 @@
-## R Addin Picker
-
-This extension also adds a command to list and launch installed R addins from Positron like in RStudio.
-
-- Command: `r.launchAddinPicker`
-- Available in the editor action bar for R files (click the tools icon).
-
-Usage:
-
-1. Start an R session in Positron.
-2. Run the command (via the action bar button or the command palette).
-3. Select an addin from the quick pick list to execute it in the R session.
-
-Note: The addin list is generated dynamically by running a small R snippet that inspects installed packages' `rstudio/addins.dcf` files and writes the result to a temporary JSON file.
-
-![](https://raw.githubusercontent.com/ntluong95/positron-r-wizard/refs/heads/main/resources/screenshot.png)
-
 ## Pipe Toggler
 
 This extension provides a convenient way to toggle the R pipe operator used in Positron, switching between the `magrittr` pipe `%>%` and the native R pipe `|>`.
@@ -51,6 +34,23 @@ This extension provides enhanced syntax highlighting for the R language in Posit
 - Markdown support inside roxygen comments
 - More complete keyword and constant detection
 
+## R Addin Picker
+
+This extension also adds a command to list and launch installed R addins from Positron like in RStudio.
+
+- Command: `r.launchAddinPicker`
+- Available in the editor action bar for R files (click the tools icon).
+
+Usage:
+
+1. Start an R session in Positron.
+2. Run the command (via the action bar button or the command palette).
+3. Select an addin from the quick pick list to execute it in the R session.
+
+Note: The addin list is generated dynamically by running a small R snippet that inspects installed packages' `rstudio/addins.dcf` files and writes the result to a temporary JSON file.
+
+![](https://raw.githubusercontent.com/ntluong95/positron-r-wizard/refs/heads/main/resources/screenshot.png)
+
 ## 💡 Future Ideas
 
 - NA
@@ -58,6 +58,3 @@ This extension provides enhanced syntax highlighting for the R language in Posit
 ## License
 
 This project is licensed under the terms in the `LICENSE` file.
-
-
-

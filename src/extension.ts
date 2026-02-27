@@ -1,19 +1,15 @@
 import * as vscode from "vscode";
 import { launchAddinPicker } from "./rstudioapi";
+import { registerScopeFeature } from "./scope/registerScopeFeature";
 
 const R_PIPE_SETTING = "positron.r.pipe";
 const USE_NATIVE_PIPE_SETTING = "positron.r.useNativePipe";
 
 let isChanging = false;
 
-// Utility Functions
 function getPipeString(): "|>" | "%>%" {
   const config = vscode.workspace.getConfiguration();
-  const pipe = config.get<string>(R_PIPE_SETTING);
-  if (pipe === "|>") {
-    return "|>";
-  }
-  return "%>%";
+  return config.get<string>(R_PIPE_SETTING) === "|>" ? "|>" : "%>%";
 }
 
 function getUseNativeBoolean(): boolean {
@@ -21,61 +17,75 @@ function getUseNativeBoolean(): boolean {
   return config.get<boolean>(USE_NATIVE_PIPE_SETTING, false);
 }
 
-async function setPipeString(value: "|>" | "%>%") {
+async function setPipeString(value: "|>" | "%>%"): Promise<void> {
   const config = vscode.workspace.getConfiguration();
   await config.update(
     R_PIPE_SETTING,
     value,
-    vscode.ConfigurationTarget.Workspace
+    vscode.ConfigurationTarget.Workspace,
   );
 }
 
-async function setUseNativeBoolean(value: boolean) {
+async function setUseNativeBoolean(value: boolean): Promise<void> {
   const config = vscode.workspace.getConfiguration();
   await config.update(
     USE_NATIVE_PIPE_SETTING,
     value,
-    vscode.ConfigurationTarget.Workspace
+    vscode.ConfigurationTarget.Workspace,
   );
 }
 
-async function syncStringFromBool() {
-  if (isChanging) return;
-  isChanging = true;
-  const useNative = getUseNativeBoolean();
-  const currentPipe = getPipeString();
-  const newPipe = useNative ? "|>" : "%>%";
-  if (currentPipe !== newPipe) {
-    await setPipeString(newPipe);
-    vscode.window.showInformationMessage(
-      `R pipe set to ${useNative ? "baseR |>" : "magrittr %>%"} (workspace)`
-    );
+async function syncStringFromBool(): Promise<void> {
+  if (isChanging) {
+    return;
   }
-  isChanging = false;
+
+  isChanging = true;
+  try {
+    const useNative = getUseNativeBoolean();
+    const currentPipe = getPipeString();
+    const nextPipe = useNative ? "|>" : "%>%";
+
+    if (currentPipe !== nextPipe) {
+      await setPipeString(nextPipe);
+      vscode.window.showInformationMessage(
+        `R pipe set to ${useNative ? "baseR |>" : "magrittr %>%"} (workspace)`,
+      );
+    }
+  } finally {
+    isChanging = false;
+  }
 }
 
-async function syncBoolFromString() {
-  if (isChanging) return;
-  isChanging = true;
-  const pipe = getPipeString();
-  const currentUseNative = getUseNativeBoolean();
-  const newUseNative = pipe === "|>";
-  if (currentUseNative !== newUseNative) {
-    await setUseNativeBoolean(newUseNative);
+async function syncBoolFromString(): Promise<void> {
+  if (isChanging) {
+    return;
   }
-  isChanging = false;
+
+  isChanging = true;
+  try {
+    const pipe = getPipeString();
+    const currentUseNative = getUseNativeBoolean();
+    const nextUseNative = pipe === "|>";
+
+    if (currentUseNative !== nextUseNative) {
+      await setUseNativeBoolean(nextUseNative);
+    }
+  } finally {
+    isChanging = false;
+  }
 }
 
-async function formatPipesInDocument() {
+async function formatPipesInDocument(): Promise<void> {
   const editor = vscode.window.activeTextEditor;
   if (!editor) {
-    vscode.window.showErrorMessage("No active editor found");
+    vscode.window.showErrorMessage("No active editor found.");
     return;
   }
 
   const document = editor.document;
   if (document.languageId !== "r") {
-    vscode.window.showWarningMessage("This command only works with R files");
+    vscode.window.showWarningMessage("This command only works with R files.");
     return;
   }
 
@@ -83,84 +93,78 @@ async function formatPipesInDocument() {
   const sourcePipe = targetPipe === "|>" ? "%>%" : "|>";
   const text = document.getText();
 
-  // Check if there are any pipes to replace
   if (!text.includes(sourcePipe)) {
     vscode.window.showInformationMessage(
-      `No ${sourcePipe} pipes found to replace`
+      `No ${sourcePipe} pipes found to replace.`,
     );
     return;
   }
 
-  // Use regex to replace all occurrences of the source pipe
-  // We need to escape special characters for regex
   const escapedSourcePipe = sourcePipe.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const regex = new RegExp(escapedSourcePipe, "g");
-  const newText = text.replace(regex, targetPipe);
+  const updatedText = text.replace(regex, targetPipe);
 
-  // Apply the edit
   const fullRange = new vscode.Range(
     document.positionAt(0),
-    document.positionAt(text.length)
+    document.positionAt(text.length),
   );
 
   const edit = new vscode.WorkspaceEdit();
-  edit.replace(document.uri, fullRange, newText);
+  edit.replace(document.uri, fullRange, updatedText);
 
   const success = await vscode.workspace.applyEdit(edit);
-  if (success) {
-    const count = (text.match(regex) || []).length;
-    vscode.window.showInformationMessage(
-      `Replaced ${count} occurrence(s) of ${sourcePipe} with ${targetPipe}`
-    );
-  } else {
-    vscode.window.showErrorMessage("Failed to format pipes in document");
+  if (!success) {
+    vscode.window.showErrorMessage("Failed to format pipes in document.");
+    return;
   }
+
+  const replacementCount = (text.match(regex) || []).length;
+  vscode.window.showInformationMessage(
+    `Replaced ${replacementCount} occurrence(s) of ${sourcePipe} with ${targetPipe}.`,
+  );
 }
 
-export function activate(context: vscode.ExtensionContext) {
-  // Initial sync
-  syncBoolFromString();
+export function activate(context: vscode.ExtensionContext): void {
+  void syncBoolFromString();
 
-  // Register command
-  const toggleCommand = vscode.commands.registerCommand(
+  const togglePipeCommand = vscode.commands.registerCommand(
     "positron-r-pipe-toggle.toggle",
     async () => {
-      const currentValue = getUseNativeBoolean();
-      await setUseNativeBoolean(!currentValue);
+      await setUseNativeBoolean(!getUseNativeBoolean());
       await syncStringFromBool();
-    }
+    },
   );
 
-  // Register RStudio addin picker command
-  const addinCommand = vscode.commands.registerCommand(
+  const launchAddinCommand = vscode.commands.registerCommand(
     "r.launchAddinPicker",
     async () => {
       await launchAddinPicker(context);
-    }
+    },
   );
 
-  // Register format pipes command
   const formatPipesCommand = vscode.commands.registerCommand(
     "positron-r-wizard.formatPipes",
     async () => {
       await formatPipesInDocument();
-    }
+    },
   );
 
-  context.subscriptions.push(toggleCommand);
-  context.subscriptions.push(addinCommand);
-  context.subscriptions.push(formatPipesCommand);
-
-  // Listen for configuration changes
   context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration(async (e) => {
-      if (e.affectsConfiguration(USE_NATIVE_PIPE_SETTING)) {
+    togglePipeCommand,
+    launchAddinCommand,
+    formatPipesCommand,
+    registerScopeFeature(context),
+  );
+
+  context.subscriptions.push(
+    vscode.workspace.onDidChangeConfiguration(async (event) => {
+      if (event.affectsConfiguration(USE_NATIVE_PIPE_SETTING)) {
         await syncStringFromBool();
-      } else if (e.affectsConfiguration(R_PIPE_SETTING)) {
+      } else if (event.affectsConfiguration(R_PIPE_SETTING)) {
         await syncBoolFromString();
       }
-    })
+    }),
   );
 }
 
-export function deactivate() { }
+export function deactivate(): void {}

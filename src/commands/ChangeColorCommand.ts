@@ -3,9 +3,7 @@ import { Command } from "./Command";
 import { Highlighter } from "../decorations/Highlighter";
 
 export class ChangeColorCommand extends Command {
-  private readonly primaryConfigKey = "pyScope.blockHighlightColor";
-  private readonly fallbackConfigKey =
-    "positron-r-wizard.scope.blockHighlightColor";
+  private readonly configKey = "positron-r-wizard.scope.blockHighlightColor";
 
   constructor(private highlighter: Highlighter) {
     super();
@@ -68,18 +66,11 @@ export class ChangeColorCommand extends Command {
       }
 
       const config = vscode.workspace.getConfiguration();
-      await Promise.all([
-        config.update(
-          this.primaryConfigKey,
-          nextColor,
-          vscode.ConfigurationTarget.Global,
-        ),
-        config.update(
-          this.fallbackConfigKey,
-          nextColor,
-          vscode.ConfigurationTarget.Global,
-        ),
-      ]);
+      await config.update(
+        this.configKey,
+        nextColor,
+        vscode.ConfigurationTarget.Global,
+      );
 
       vscode.window.showInformationMessage(
         `R scope highlight color updated to: ${nextColor}`,

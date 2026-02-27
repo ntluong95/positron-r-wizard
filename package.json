@@ -136,15 +136,6 @@
     "configuration": {
       "title": "Positron R Wizard",
       "properties": {
-        "positron.r.pipe": {
-          "type": "string",
-          "default": "%>%",
-          "description": "The R pipe operator to use. This setting is managed by the 'R Pipe' toggle.",
-          "enum": [
-            "%>%",
-            "|>"
-          ]
-        },
         "positron.r.useNativePipe": {
           "type": "boolean",
           "default": false,
@@ -164,25 +155,6 @@
           "type": "boolean",
           "default": true,
           "description": "Enable live R scope highlighting."
-        },
-        "pyScope.blockHighlightColor": {
-          "type": "string",
-          "default": "42,65,132",
-          "description": "RGB color for scope highlighting in the format 'r, g, b'."
-        },
-        "pyScope.blockHighlightOpacity": {
-          "type": "number",
-          "default": 0.08,
-          "minimum": 0.01,
-          "maximum": 1,
-          "description": "Opacity for scope block body highlighting."
-        },
-        "pyScope.firstLastLineOpacity": {
-          "type": "number",
-          "default": 0.5,
-          "minimum": 0.01,
-          "maximum": 1,
-          "description": "Opacity for scope header and closing-line highlighting."
         },
         "positron-r-wizard.scope.blockHighlightColor": {
           "type": "string",

@@ -3,8 +3,7 @@ import { Command } from "./Command";
 import { Highlighter } from "../decorations/Highlighter";
 
 export class ChangeOpacityCommand extends Command {
-  private readonly primaryConfigPrefix = "pyScope";
-  private readonly fallbackConfigPrefix = "positron-r-wizard.scope";
+  private readonly configPrefix = "positron-r-wizard.scope";
 
   constructor(private highlighter: Highlighter) {
     super();
@@ -69,18 +68,11 @@ export class ChangeOpacityCommand extends Command {
             }
 
             const config = vscode.workspace.getConfiguration();
-            await Promise.all([
-              config.update(
-                `${this.primaryConfigPrefix}.${selectedOption.key}`,
-                numValue,
-                vscode.ConfigurationTarget.Global,
-              ),
-              config.update(
-                `${this.fallbackConfigPrefix}.${selectedOption.key}`,
-                numValue,
-                vscode.ConfigurationTarget.Global,
-              ),
-            ]);
+            await config.update(
+              `${this.configPrefix}.${selectedOption.key}`,
+              numValue,
+              vscode.ConfigurationTarget.Global,
+            );
             vscode.window.showInformationMessage(
               `R scope ${selectedOption.label.toLowerCase()} updated to ${numValue}`,
             );

@@ -13,7 +13,7 @@ import { selectionStack } from "../utils/selectionStack";
 import { BlockTree, CodeBlockNode } from "../utils/BlockTree";
 
 export class Highlighter {
-  private readonly configSections = ["pyScope", "positron-r-wizard.scope"];
+  private readonly configSections = ["positron-r-wizard.scope"];
   private decorations: {
     block: vscode.TextEditorDecorationType;
     firstLine: vscode.TextEditorDecorationType;
@@ -40,25 +40,17 @@ export class Highlighter {
   private createDecorations() {
     const config = vscode.workspace.getConfiguration();
     let highlightColor =
-      config.get<string>(
-        "pyScope.blockHighlightColor",
-        config.get<string>(
-          "positron-r-wizard.scope.blockHighlightColor",
-          "42,65,132",
-        ),
-      ) || "42,65,132";
+      config.get<string>("positron-r-wizard.scope.blockHighlightColor", "42,65,132") ||
+      "42,65,132";
 
     let blockOpacity = config.get<number>(
-      "pyScope.blockHighlightOpacity",
-      config.get<number>("positron-r-wizard.scope.blockHighlightOpacity", 0.08),
+      "positron-r-wizard.scope.blockHighlightOpacity",
+      0.08,
     );
 
     let firstLastOpacity = config.get<number>(
-      "pyScope.firstLastLineOpacity",
-      config.get<number>(
-        "positron-r-wizard.scope.firstLastLineOpacity",
-        0.5,
-      ),
+      "positron-r-wizard.scope.firstLastLineOpacity",
+      0.5,
     );
 
     // Validate opacity values.

@@ -1,0 +1,38 @@
+er_ranges|blank_out_ignores_in_lines|blank_out_regexp_matches|browseEnv|browseURL|browseVignettes|bug\\.report|bug\\.report\\.info|c\\.bibentry|c\\.person|capture\\.output|changedFiles|charClass|check_for_XQuartz|check_screen_device|checkCRAN|checkHT|chooseBioCmirror|chooseCRANmirror|citation|cite|citeNatbib|citEntry|citFooter|citHeader|close\\.socket|close\\.txtProgressBar|clrhash|combn|compareVersion|conformToProto|contrib\\.url|correctFilenameToken|count\\.fields|create\\.post|data|data\\.entry|dataentry|de|de\\.ncols|de\\.restore|de\\.setup|debugcall|debugger|defaultUserAgent|demo|download\\.file|download\\.packages|dump\\.frames|edit|edit\\.data\\.frame|edit\\.default|edit\\.matrix|edit\\.vignette|emacs|example|expr2token|file_test|file\\.edit|fileCompletionPreferred|fileCompletions|fileSnapshot|filter_packages_by_depends_predicates|find|find_files_in_directories|findCRANmirror|findExactMatches|findFuzzyMatches|findGeneric|findLineNum|findMatches|fix|fixInNamespace|flush\\.console|fnLineNum|format\\.aspell|format\\.aspell_inspect_context|format\\.bibentry|format\\.citation|format\\.hashtab|format\\.MethodsFunction|format\\.news_db|format\\.object_size|format\\.person|format\\.roman|formatOL|formatUL|functionArgs|fuzzyApropos|get_parse_data_for_message_strings|getAnywhere|getCRANmirrors|getDependencies|getFromNamespace|gethash|getIsFirstArg|getKnownS3generics|getParseData|getParseText|getRcode|getRcode\\.vignette|getS3method|getSrcByte|getSrcDirectory|getSrcfile|getSrcFilename|getSrcLocation|getSrcref|getTxtProgressBar|glob2rx|globalVariables|hashtab|hasName|head|head\\.array|head\\.default|head\\.ftable|head\\.function|head\\.matrix|help|help\\.request|help\\.search|help\\.start|helpCompletions|history|hsearch_db|hsearch_db_concepts|hsearch_db_keywords|index\\.search|inFunction|install\\.packages|installed\\.packages|is\\.hashtab|is\\.relistable|isBasePkg|isInsideQuotes|isS3method|isS3stdGeneric|keywordCompletions|length\\.hashtab|limitedLabels|loadedPackageCompletions|loadhistory|localeToCharset|ls\\.str|lsf\\.str|macDynLoads|maintainer|make_sysdata_rda|make\\.packages\\.html|make\\.socket|makeRegexpSafe|makeRweaveLatexCodeRunner|makeUserAgent|maphash|matchAvailableTopics|memory\\.limit|memory\\.size|menu|merge_demo_index|merge_vignette_index|methods|mirror2html|modifyList|new\\.packages|news|normalCompletions|nsl|numhash|object\\.size|offline_help_helper|old\\.packages|Ops\\.roman|package\\.skeleton|packageDate|packageDescription|packageName|packageStatus|packageVersion|page|person|personList|pico|print\\.aspell|print\\.aspell_inspect_context|print\\.bibentry|print\\.Bibtex|print\\.browseVignettes|print\\.changedFiles|print\\.citation|print\\.fileSnapshot|print\\.findLineNumResult|print\\.getAnywhere|print\\.hashtab|print\\.help_files_with_topic|print\\.hsearch|print\\.hsearch_db|print\\.Latex|print\\.ls_str|print\\.MethodsFunction|print\\.news_db|print\\.object_size|print\\.packageDescription|print\\.packageIQR|print\\.packageStatus|print\\.person|print\\.roman|print\\.sessionInfo|print\\.socket|print\\.summary\\.packageStatus|print\\.vignette|printhsearchInternal|process\\.events|prompt|prompt\\.data\\.frame|prompt\\.default|promptData|promptImport|promptPackage|rc\\.getOption|rc\\.options|rc\\.settings|rc\\.status|read\\.csv|read\\.csv2|read\\.delim|read\\.delim2|read\\.DIF|read\\.fortran|read\\.fwf|read\\.socket|read\\.table|readCitationFile|recover|registerNames|regquote|relist|relist\\.default|relist\\.factor|relist\\.list|relist\\.matrix|remhash|remove\\.packages|removeSource|rep\\.bibentry|rep\\.person|rep\\.roman|resolvePkgType|Rprof|Rprof_memory_summary|Rprofmem|RShowDoc|RSiteSearch|rtags|rtags\\.file|Rtangle|RtangleFinish|RtangleRuncode|RtangleSetup|RtangleWritedoc|RweaveChunkPrefix|RweaveEvalWithOpt|RweaveLatex|RweaveLatexFinish|RweaveLatexOptions|RweaveLatexRuncode|RweaveLatexSetup|RweaveLatexWritedoc|RweaveTryStop|savehistory|select\\.list|sessionInfo|setBreakpoint|sethash|setIsFirstArg|setRepositories|setTxtProgressBar|shorten\\.to\\.string|simplifyRepos|sort\\.bibentry|specialCompletions|specialFunctionArgs|specialOpCompletionsHelper|specialOpLocs|stack|stack\\.data\\.frame|stack\\.default|Stangle|str|str\\.data\\.frame|str\\.Date|str\\.default|str\\.hashtab|str\\.POSIXt|str2logical|strcapture|strextract|strOptions|strslice|subset\\.news_db|substr_with_tabs|summary\\.aspell|summary\\.packageStatus|Summary\\.roman|summaryRprof|suppressForeignCheck|Sweave|SweaveGetSyntax|SweaveHooks|SweaveParseOptions|SweaveReadFile|SweaveSyntConv|tail|tail\\.array|tail\\.default|tail\\.ftable|tail\\.function|tail\\.matrix|tar|timestamp|toBibtex|toBibtex\\.bibentry|toBibtex\\.person|toLatex|toLatex\\.sessionInfo|toLatexPDlist|topicName|transform\\.bibentry|txtProgressBar|type\\.convert|type\\.convert\\.data\\.frame|type\\.convert\\.default|type\\.convert\\.list|typhash|undebugcall|unique\\.bibentry|unique\\.person|unlist\\.relistable|unstack|unstack\\.data\\.frame|unstack\\.default|untar|untar2|unzip|update\\.packages|update\\.packageStatus|upgrade|upgrade\\.packageStatus|url\\.show|URLdecode|URLencode|vi|View|vignette|warnErrList|write\\.csv|write\\.csv2|write\\.ctags|write\\.etags|write\\.socket|write\\.table|wsbrowser|xedit|xemacs|zip)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "support.namespace.r"
+            },
+            "2": {
+              "name": "punctuation.accessor.colons.r"
+            },
+            "3": {
+              "name": "support.function.r"
+            },
+            "4": {
+              "name": "punctuation.definition.arguments.begin.r"
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.arguments.end.r"
+            }
+          },
+          "patterns": [
+            { "include": "#comment" },
+            {
+              "match": "([A-Za-z\\.][\\w\\.]*)\\s*(?==)",
+              "captures": {
+                "1": { "name": "variable.parameter" }
+              }
+            },
+            {
+              "include": "#function-call-arguments"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

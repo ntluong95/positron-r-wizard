@@ -99,6 +99,7 @@
         { "include": "#backtick-quoted" },
         { "include": "#function-definition" },
         { "include": "#keywords" },
+        { "include": "#glue-function-call" },
         { "include": "#builtin-functions" },
         { "include": "#function-call" },
         { "include": "#package-namespace" },
@@ -114,6 +115,144 @@
         "0": { "name": "meta.function-call" },
         "1": { "name": "entity.name.function" }
       }
+    },
+    "glue-function-call": {
+      "name": "meta.function-call.r",
+      "begin": "\\b(?:(glue|stringr)(::))?(glue|str_glue|str_glue_data)\\s*(\\()",
+      "beginCaptures": {
+        "1": { "name": "support.namespace.r" },
+        "2": { "name": "punctuation.accessor.colons.r" },
+        "3": { "name": "support.function.r" },
+        "4": { "name": "punctuation.definition.arguments.begin.r" }
+      },
+      "end": "(\\))",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.arguments.end.r" }
+      },
+      "patterns": [
+        { "include": "#comment" },
+        {
+          "match": "([A-Za-z\\.][\\w\\.]*)\\s*(?==)",
+          "captures": {
+            "1": { "name": "variable.parameter" }
+          }
+        },
+        { "include": "#glue-function-arguments" }
+      ]
+    },
+    "glue-function-arguments": {
+      "patterns": [
+        { "include": "#glue-qstring" },
+        { "include": "#glue-qqstring" },
+        { "include": "#glue-raw-strings" },
+        { "include": "#expression" }
+      ]
+    },
+    "glue-qstring": {
+      "name": "string.quoted.single",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        { "include": "#escapes" },
+        { "include": "#glue-brace-escape" },
+        { "include": "#glue-interpolation" }
+      ]
+    },
+    "glue-qqstring": {
+      "name": "string.quoted.double",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "include": "#escapes" },
+        { "include": "#glue-brace-escape" },
+        { "include": "#glue-interpolation" }
+      ]
+    },
+    "glue-brace-escape": {
+      "name": "constant.character.escape.brace.r",
+      "match": "\\{\\{|\\}\\}"
+    },
+    "glue-raw-strings": {
+      "name": "string.quoted.other",
+      "patterns": [
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]\"(-*)\\{",
+          "end": "\\}\\1\"",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]'(-*)\\{",
+          "end": "\\}\\1'",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]\"(-*)\\[",
+          "end": "\\]\\1\"",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]'(-*)\\[",
+          "end": "\\]\\1'",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]\"(-*)\\(",
+          "end": "\\)\\1\"",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]'(-*)\\(",
+          "end": "\\)\\1'",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        }
+      ]
+    },
+    "glue-interpolation": {
+      "name": "meta.interpolation.r",
+      "contentName": "source.r.embedded",
+      "begin": "(?<!\\{)\\{(?!\\{)",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.interpolation.begin.r" }
+      },
+      "end": "(?<!\\})\\}(?!\\})",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.interpolation.end.r" }
+      },
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#glue-interpolation-braces" },
+        { "include": "#expression" }
+      ]
+    },
+    "glue-interpolation-braces": {
+      "name": "meta.bracket.embedded.r",
+      "begin": "\\{",
+      "end": "\\}",
+      "patterns": [{ "include": "#expression" }]
     },
     "function-definition": {
       "name": "meta.function.definition",

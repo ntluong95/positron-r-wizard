@@ -1,0 +1,269 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "comment": "https://macromates.com/manual/en/language_grammars",
+  "name": "R",
+  "scopeName": "source.r",
+  "fileTypes": ["R", "r", "Rprofile"],
+  "foldingStartMarker": "\\{\\s*(?:#|$)",
+  "foldingStopMarker": "^\\s*\\}",
+  "variables": {
+    "bracket": "meta.bracket",
+    "identifier": "variable.object",
+    "latex": "keyword.other",
+    "operator": "keyword.operator",
+    "parameter": "variable.parameter",
+    "roxygen-tag": "keyword.other"
+  },
+  "patterns": [{ "include": "#roxygen-example" }, { "include": "#basic" }],
+  "repository": {
+    "basic": {
+      "patterns": [
+        { "include": "#roxygen" },
+        { "include": "#comment" },
+        { "include": "#expression" }
+      ]
+    },
+    "basic-roxygen-example": {
+      "patterns": [
+        { "name": "comment.line", "match": "^\\s*#+'" },
+        { "include": "#comment" },
+        { "include": "#expression" }
+      ]
+    },
+    "brackets": {
+      "patterns": [
+        {
+          "name": "meta.bracket",
+          "begin": "\\{",
+          "end": "\\}",
+          "patterns": [{ "include": "#basic" }]
+        },
+        {
+          "name": "meta.bracket",
+          "begin": "\\[",
+          "end": "\\]",
+          "patterns": [
+            {
+              "match": "([\\w.]+)\\s*(?==[^=])",
+              "captures": { "1": { "name": "variable.parameter" } }
+            },
+            { "include": "#basic" }
+          ]
+        },
+        {
+          "name": "meta.bracket",
+          "begin": "\\(",
+          "end": "\\)",
+          "patterns": [
+            {
+              "match": "([\\w.]+)\\s*(?==[^=])",
+              "captures": { "1": { "name": "variable.parameter" } }
+            },
+            { "include": "#basic" }
+          ]
+        }
+      ]
+    },
+    "comment": { "name": "comment.line", "match": "#.*" },
+    "escapes": {
+      "patterns": [
+        { "include": "#escape-code" },
+        { "include": "#escape-hex" },
+        { "include": "#escape-octal" },
+        { "include": "#escape-unicode" },
+        { "include": "#escape-invalid" }
+      ]
+    },
+    "escape-code": {
+      "name": "constant.character.escape",
+      "match": "\\\\[abefnrtv'\"`\\\\]"
+    },
+    "escape-hex": {
+      "name": "constant.numeric",
+      "match": "\\\\x[0-9a-fA-F]+"
+    },
+    "escape-octal": {
+      "name": "constant.character.escape",
+      "match": "\\\\\\d{1,3}"
+    },
+    "escape-unicode": {
+      "name": "constant.character.escape",
+      "match": "\\\\[uU](?:[0-9a-fA-F]+|\\{[0-9a-fA-F]+\\})"
+    },
+    "escape-invalid": { "name": "invalid", "match": "\\\\." },
+    "expression": {
+      "patterns": [
+        { "include": "#brackets" },
+        { "include": "#raw-strings" },
+        { "include": "#strings" },
+        { "include": "#backtick-quoted" },
+        { "include": "#function-definition" },
+        { "include": "#keywords" },
+        { "include": "#glue-function-call" },
+        { "include": "#builtin-functions" },
+        { "include": "#function-call" },
+        { "include": "#package-namespace" },
+        { "include": "#dollar-access" },
+        { "include": "#identifiers" },
+        { "include": "#numbers" },
+        { "include": "#operators" }
+      ]
+    },
+    "function-call": {
+      "match": "([\\w.]+)(?=\\()",
+      "captures": {
+        "0": { "name": "meta.function-call" },
+        "1": { "name": "entity.name.function" }
+      }
+    },
+    "glue-function-call": {
+      "name": "meta.function-call.r",
+      "begin": "\\b(?:(glue|stringr)(::))?(glue|str_glue|str_glue_data)\\s*(\\()",
+      "beginCaptures": {
+        "1": { "name": "support.namespace.r" },
+        "2": { "name": "punctuation.accessor.colons.r" },
+        "3": { "name": "support.function.r" },
+        "4": { "name": "punctuation.definition.arguments.begin.r" }
+      },
+      "end": "(\\))",
+      "endCaptures": {
+        "1": { "name": "punctuation.definition.arguments.end.r" }
+      },
+      "patterns": [
+        { "include": "#comment" },
+        {
+          "match": "([A-Za-z\\.][\\w\\.]*)\\s*(?==)",
+          "captures": {
+            "1": { "name": "variable.parameter" }
+          }
+        },
+        { "include": "#glue-function-arguments" }
+      ]
+    },
+    "glue-function-arguments": {
+      "patterns": [
+        { "include": "#glue-qstring" },
+        { "include": "#glue-qqstring" },
+        { "include": "#glue-raw-strings" },
+        { "include": "#expression" }
+      ]
+    },
+    "glue-qstring": {
+      "name": "string.quoted.single",
+      "begin": "'",
+      "end": "'",
+      "patterns": [
+        { "include": "#escapes" },
+        { "include": "#glue-brace-escape" },
+        { "include": "#glue-interpolation" }
+      ]
+    },
+    "glue-qqstring": {
+      "name": "string.quoted.double",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        { "include": "#escapes" },
+        { "include": "#glue-brace-escape" },
+        { "include": "#glue-interpolation" }
+      ]
+    },
+    "glue-brace-escape": {
+      "name": "constant.character.escape.brace.r",
+      "match": "\\{\\{|\\}\\}"
+    },
+    "glue-raw-strings": {
+      "name": "string.quoted.other",
+      "patterns": [
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]\"(-*)\\{",
+          "end": "\\}\\1\"",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]'(-*)\\{",
+          "end": "\\}\\1'",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]\"(-*)\\[",
+          "end": "\\]\\1\"",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]'(-*)\\[",
+          "end": "\\]\\1'",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]\"(-*)\\(",
+          "end": "\\)\\1\"",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        },
+        {
+          "name": "string.quoted.other",
+          "begin": "[rR]'(-*)\\(",
+          "end": "\\)\\1'",
+          "patterns": [
+            { "include": "#glue-brace-escape" },
+            { "include": "#glue-interpolation" }
+          ]
+        }
+      ]
+    },
+    "glue-interpolation": {
+      "name": "meta.interpolation.r",
+      "contentName": "source.r.embedded",
+      "begin": "(?<!\\{)\\{(?!\\{)",
+      "beginCaptures": {
+        "0": { "name": "punctuation.section.interpolation.begin.r" }
+      },
+      "end": "(?<!\\})\\}(?!\\})",
+      "endCaptures": {
+        "0": { "name": "punctuation.section.interpolation.end.r" }
+      },
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#glue-interpolation-braces" },
+        { "include": "#expression" }
+      ]
+    },
+    "glue-interpolation-braces": {
+      "name": "meta.bracket.embedded.r",
+      "begin": "\\{",
+      "end": "\\}",
+      "patterns": [{ "include": "#expression" }]
+    },
+    "function-definition": {
+      "name": "meta.function.definition",
+      "begin": "(function)\\s*(\\()",
+      "beginCaptures": {
+        "1": { "name": "keyword.other" },
+        "2": { "name": "meta.bracket" }
+      },
+      "end": "(\\))",
+      "endCaptures": { "1": { "name": "meta.bracket" } },
+      "patterns": [
+        {
+          "begin": "([\\w.]+)",
+          "b

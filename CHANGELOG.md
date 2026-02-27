@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.8
+
+- Added: Syntax highlighting for glue string interpolation
+
 ## 0.0.7
 
 - Added: R Scope Highlighting — automatically highlights the current code block/scope where the cursor is positioned.

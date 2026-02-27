@@ -45,6 +45,7 @@ This extension provides enhanced syntax highlighting for the R language in Posit
 - Built-in R functions (base, graphics, stats, utils, grDevices, methods)
 - Namespace highlighting for pkg::fun, such as dplyr::select(), ggplot2::ggplot()
 - $ accessor highlighting for lists, environments, S3 objects, such as df$column, list_obj$nested$element
+- Syntax highlighting for glue string interpolation
 - tidyverse-style operators and helper functions
 - Backtick-quoted identifiers
 - Raw strings (r"{ ... }", r"[...]", etc.)

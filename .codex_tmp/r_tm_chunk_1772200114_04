@@ -1,0 +1,73 @@
+p|close\\.screen|co\\.intervals|contour|contour\\.default|coplot|curve|dotchart|erase\\.screen|extendDateTimeFormat|filled\\.contour|fourfoldplot|frame|grconvertX|grconvertY|grid|hist|hist\\.Date|hist\\.default|hist\\.POSIXt|identify|identify\\.default|image|image\\.default|layout|layout\\.show|lcm|legend|lines|lines\\.default|lines\\.formula|lines\\.histogram|lines\\.table|locator|matlines|matplot|matpoints|mosaicplot|mosaicplot\\.default|mosaicplot\\.formula|mtext|pairs|pairs\\.default|pairs\\.formula|panel\\.smooth|par|persp|persp\\.default|pie|piechart|plot\\.data\\.frame|plot\\.default|plot\\.design|plot\\.factor|plot\\.formula|plot\\.function|plot\\.histogram|plot\\.new|plot\\.raster|plot\\.table|plot\\.window|plot\\.xy|plotHclust|points|points\\.default|points\\.formula|points\\.table|polygon|polypath|rasterImage|rect|rug|screen|segments|smoothScatter|spineplot|spineplot\\.default|spineplot\\.formula|split\\.screen|stars|stem|strheight|stripchart|stripchart\\.default|stripchart\\.formula|strwidth|sunflowerplot|sunflowerplot\\.default|sunflowerplot\\.formula|symbols|text|text\\.default|text\\.formula|title|xinch|xspline|xyinch|yinch)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "support.namespace.r"
+            },
+            "2": {
+              "name": "punctuation.accessor.colons.r"
+            },
+            "3": {
+              "name": "support.function.r"
+            },
+            "4": {
+              "name": "punctuation.definition.arguments.begin.r"
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.arguments.end.r"
+            }
+          },
+          "patterns": [
+            { "include": "#comment" },
+            {
+              "match": "([A-Za-z\\.][\\w\\.]*)\\s*(?==)",
+              "captures": {
+                "1": { "name": "variable.parameter" }
+              }
+            },
+            {
+              "include": "#function-call-arguments"
+            }
+          ]
+        },
+        {
+          "name": "meta.function-call.r",
+          "begin": "\\b(?:(grDevices)(::))?(adjustcolor|anyNA\\.raster|as\\.graphicsAnnot|as\\.matrix\\.raster|as\\.raster|as\\.raster\\.array|as\\.raster\\.character|as\\.raster\\.logical|as\\.raster\\.matrix|as\\.raster\\.numeric|as\\.raster\\.raster|as\\.raster\\.raw|axisTicks|bitmap|bmp|boxplot\\.stats|c2to3|cairo_pdf|cairo_ps|cairoFT|cairoSymbolFont|cairoVersion|check_gs_type|check\\.options|checkFont|checkFont\\.CIDFont|checkFont\\.default|checkFont\\.Type1Font|checkFontInUse|checkIntFormat|checkQuartzFont|checkSymbolFont|checkX11Font|chromaticAdaptation|chull|CIDFont|cm|cm\\.colors|col2rgb|colorConverter|colorRamp|colorRampPalette|colors|colours|comparePangoVersion|contourLines|convertColor|densCols|dev\\.capabilities|dev\\.capture|dev\\.control|dev\\.copy|dev\\.copy2eps|dev\\.copy2pdf|dev\\.cur|dev\\.displaylist|dev\\.flush|dev\\.hold|dev\\.interactive|dev\\.list|dev\\.new|dev\\.next|dev\\.off|dev\\.prev|dev\\.print|dev\\.set|dev\\.size|dev2bitmap|devAskNewPage|deviceIsInteractive|embedFonts|embedGlyphs|extendrange|getGraphicsEvent|getGraphicsEventEnv|glyphAnchor|glyphFont|glyphFontList|glyphHeight|glyphHeightBottom|glyphInfo|glyphJust|glyphJust\\.character|glyphJust\\.GlyphJust|glyphJust\\.numeric|glyphWidth|glyphWidthLeft|graphics\\.off|gray|gray\\.colors|grey|grey\\.colors|grSoftVersion|guessEncoding|hcl|hcl\\.colors|hcl\\.pals|heat\\.colors|hsv|initPSandPDFfonts|invertStyle|is\\.na\\.raster|is\\.raster|isPDF|jpeg|make\\.rgb|mapCharWeight|mapStyle|mapWeight|matchEncoding|matchEncoding\\.CIDFont|matchEncoding\\.Type1Font|matchFont|n2mfrow|nclass\\.FD|nclass\\.scott|nclass\\.Sturges|Ops\\.raster|optionSymbolFont|palette|palette\\.colors|palette\\.match|palette\\.pals|pangoVersion|pattern|pdf|pdf\\.options|pdfFonts|pictex|png|postscript|postscriptFonts|pow3|prettyDate|print\\.colorConverter|print\\.raster|print\\.recordedplot|print\\.RGBcolorConverter|print\\.RGlyphFont|printFont|printFont\\.CIDFont|printFont\\.Type1Font|printFonts|ps\\.options|quartz|quartz\\.options|quartz\\.save|quartzFont|quartzFonts|rainbow|recordGraphics|recordPalette|recordPlot|replayPlot|restoreRecordedPlot|rgb|rgb2hsv|RGBcolorConverter|savePlot|seqDtime|setEPS|setFonts|setGraphicsEventEnv|setGraphicsEventHandlers|setPS|setQuartzFonts|setX11Fonts|svg|symbolfamilyDefault|symbolType1support|terrain\\.colors|tiff|topo\\.colors|trans3d|trunc_POSIXt|Type1Font|vectorizeConverter|warnLogCoords|x11|X11|X11\\.options|X11Font|X11FontError|X11Fonts|xfig|xy\\.coords|xyTable|xyz\\.coords)\\s*(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "support.namespace.r"
+            },
+            "2": {
+              "name": "punctuation.accessor.colons.r"
+            },
+            "3": {
+              "name": "support.function.r"
+            },
+            "4": {
+              "name": "punctuation.definition.arguments.begin.r"
+            }
+          },
+          "end": "(\\))",
+          "endCaptures": {
+            "1": {
+              "name": "punctuation.definition.arguments.end.r"
+            }
+          },
+          "patterns": [
+            { "include": "#comment" },
+            {
+              "match": "([A-Za-z\\.][\\w\\.]*)\\s*(?==)",
+              "captures": {
+                "1": { "name": "variable.parameter" }
+              }
+            },
+            {
+              "include": "#function-call-arguments"
+            }
+          ]
+        },
+        {
+          "name": "meta.function-call.r",
+          "begin": "\\b(?:(methods)(::))?(addNextMethod|allNames|Arith|as|asMethodDefinition|assignClassDef|assignMethodsMetaData|balanceMethodsList|bind_activation|cacheGenericsMetaData|cacheMetaData|cacheMethod|cacheOnAssign|callGeneric|callNextMethod|canCoerce|cbind|cbind2|checkAtAssignment|checkSlotAssignment|classesToAM|classGeneratorFunction|classLabel|classMetaName|className|coerce|Compare|completeClassDefinition|completeExtends|completeSubclasses|Complex|conformMethod|defaultDumpName|defaultPrototype|dispatchIsInternal|doPrimitiveMethod|dumpMethod|dumpMethods|el|elNamed|empty\\.dump|emptyMethodsList|envRefInferField|envRefSetField|evalOnLoad|evalqOnLoad|evalSource|existsFunction|existsMethod|extends|externalRefMethod|finalDefaultMethod|findClass|findFunction|findMethod|findMethods|findMethodSignatures|findUnique|fixPre1\\.8|formalArgs|fromNextMethod|functionBody|generic\\.skeleton|genericForBasic|getAllSuperClasses|getClass|getClassDef|getClasses|getDataPart|getFunction|getGeneric|getGenericFromCall|getGenerics|getGroup|getGroupMembers|getLoadActions|getMethod|getMethods|getMethodsAndAccessors|getMethodsForDispatch|getMethodsMetaData|getPackageName|getRefClass|getRefSuperClasses|getSlots|getValidity|hasArg|hasLoadAction|hasMethod|hasMethods|implicitGeneric|inBasicFuns|inferProperties|inheritedSlotNames|inheritedSubMethodLists|initFieldArgs|initialize|initMethodDispatch|initRefFields|insertClassMethods|insertMethod|insertMethodInEmptyList|insertSource|installClassMethod|is|isBaseFun|isClass|isClassDef|isClassUnion|isGeneric|isGrammarSymbol|isGroup|isMixin|isRematched|isS3Generic|isSealedClass|isSealedMethod|isVirtualClass|isXS3Class|kronecker|languageEl|listFromMethods|loadMethod|Logic|makeClassMethod|makeClassRepresentation|makeEnvRefMethods|makeExtends|makeGeneric|makeMethodsList|makePrototypeFromClassDef|makeStandardGeneric|matchDefaults|matchSignature|Math|Math2|matrixOps|mergeMethods|metaNameUndo|method\\.skeleton|MethodAddCoerce|methodSignatureMatrix|MethodsList|MethodsListSelect|methodsPackageMetaName|missingArg|multipleClasses|new|newBasic|newClassRepresentation|newEmptyObject|Ops|outerLabels|packageSlot|possibleExtends|printClassRepresentation|printPropertiesList|prohibitGeneric|promptClass|promptMethods|prototype|Quote|rbind|rbind2|reconcilePropertiesAndPrototype|refClassFields|refClassInfor

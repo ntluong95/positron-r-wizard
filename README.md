@@ -1,3 +1,21 @@
+## R Scope Highlighting
+
+Automatically highlights the current code block/scope where your cursor is positioned in R files.
+
+- Visual highlighting of function definitions, loops, conditionals, and other code blocks
+- Header lines (function signatures, loop declarations) highlighted with higher opacity
+- Block body highlighted with lower opacity for subtle visual feedback
+- Last line of blocks clearly marked
+- Progressive parent block selection support
+
+Configuration:
+
+- `positron-r-wizard.scope.blockHighlightColor`: RGB color for block highlighting (default: "42,65,132")
+- `positron-r-wizard.scope.blockHighlightOpacity`: Opacity for block body highlighting (default: 0.08)
+- `positron-r-wizard.scope.firstLastLineOpacity`: Opacity for first/last line highlighting (default: 0.5)
+
+The feature activates automatically when you open R files and move your cursor through different code blocks.
+
 ## Pipe Toggler
 
 This extension provides a convenient way to toggle the R pipe operator used in Positron, switching between the `magrittr` pipe `%>%` and the native R pipe `|>`.

@@ -2,6 +2,8 @@
 
 ## 0.0.7
 
+- Added: R Scope Highlighting — automatically highlights the current code block/scope where the cursor is positioned.
+
 ## 0.0.6
 
 - Add syntax highlighting for default textmate grammar in Positron.

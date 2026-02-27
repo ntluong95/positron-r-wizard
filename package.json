@@ -16,7 +16,7 @@
     "wizard",
     "positron"
   ],
-  "version": "0.0.6",
+  "version": "0.0.7",
   "publisher": "ntluong95",
   "repository": {
     "type": "git",
@@ -90,6 +90,26 @@
           "controlType": "button",
           "displayTitle": true
         }
+      },
+      {
+        "command": "positron-r-wizard.scope.changeColor",
+        "title": "R Scope: Change Highlight Color",
+        "category": "R Scope"
+      },
+      {
+        "command": "positron-r-wizard.scope.changeOpacity",
+        "title": "R Scope: Change Highlight Opacity",
+        "category": "R Scope"
+      },
+      {
+        "command": "positron-r-wizard.scope.selectBlock",
+        "title": "R Scope: Select Block",
+        "category": "R Scope"
+      },
+      {
+        "command": "positron-r-wizard.scope.undoBlockSelection",
+        "title": "R Scope: Undo Block Selection",
+        "category": "R Scope"
       }
     ],
     "menus": {
@@ -139,6 +159,49 @@
           "type": "boolean",
           "default": false,
           "description": "When enabled, addin invocation code will be printed to the R console before execution."
+        },
+        "positron-r-wizard.scope.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable live R scope highlighting."
+        },
+        "pyScope.blockHighlightColor": {
+          "type": "string",
+          "default": "42,65,132",
+          "description": "RGB color for scope highlighting in the format 'r, g, b'."
+        },
+        "pyScope.blockHighlightOpacity": {
+          "type": "number",
+          "default": 0.08,
+          "minimum": 0.01,
+          "maximum": 1,
+          "description": "Opacity for scope block body highlighting."
+        },
+        "pyScope.firstLastLineOpacity": {
+          "type": "number",
+          "default": 0.5,
+          "minimum": 0.01,
+          "maximum": 1,
+          "description": "Opacity for scope header and closing-line highlighting."
+        },
+        "positron-r-wizard.scope.blockHighlightColor": {
+          "type": "string",
+          "default": "42,65,132",
+          "description": "RGB color for R scope highlighting in the format 'r, g, b'."
+        },
+        "positron-r-wizard.scope.blockHighlightOpacity": {
+          "type": "number",
+          "default": 0.08,
+          "minimum": 0.01,
+          "maximum": 1,
+          "description": "Opacity for R scope block body highlighting."
+        },
+        "positron-r-wizard.scope.firstLastLineOpacity": {
+          "type": "number",
+          "default": 0.5,
+          "minimum": 0.01,
+          "maximum": 1,
+          "description": "Opacity for R scope header and closing-line highlighting."
         }
       }
     }

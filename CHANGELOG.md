@@ -1,6 +1,9 @@
 # Changelog
 
+## 0.0.7
+
 ## 0.0.6
+
 - Add syntax highlighting for default textmate grammar in Positron.
 
 ## 0.0.5

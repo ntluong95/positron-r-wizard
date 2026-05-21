@@ -4,8 +4,19 @@ import { registerScopeFeature } from "./scope/registerScopeFeature";
 
 const R_PIPE_SETTING = "positron.r.pipe";
 const USE_NATIVE_PIPE_SETTING = "positron.r.useNativePipe";
+const OUTLINE_FOCUS_COMMAND = "outline.focus";
+const OUTLINE_REMOVE_VIEW_COMMAND = "outline.removeView";
 
 let isChanging = false;
+let isOutlineVisible = false;
+
+function isRDocument(document: vscode.TextDocument): boolean {
+  return document.languageId === "r";
+}
+
+function isQuartoDocument(document: vscode.TextDocument): boolean {
+  return document.languageId === "quarto";
+}
 
 function getPipeString(): "|>" | "%>%" {
   const config = vscode.workspace.getConfiguration();
@@ -84,8 +95,10 @@ async function formatPipesInDocument(): Promise<void> {
   }
 
   const document = editor.document;
-  if (document.languageId !== "r") {
-    vscode.window.showWarningMessage("This command only works with R files.");
+  if (!isRDocument(document) && !isQuartoDocument(document)) {
+    vscode.window.showWarningMessage(
+      "This command only works with R and Quarto files.",
+    );
     return;
   }
 
@@ -149,10 +162,24 @@ export function activate(context: vscode.ExtensionContext): void {
     },
   );
 
+  const toggleOutlineCommand = vscode.commands.registerCommand(
+    "positron-r-wizard.toggleOutline",
+    async () => {
+      if (isOutlineVisible) {
+        await vscode.commands.executeCommand(OUTLINE_REMOVE_VIEW_COMMAND);
+        isOutlineVisible = false;
+      } else {
+        await vscode.commands.executeCommand(OUTLINE_FOCUS_COMMAND);
+        isOutlineVisible = true;
+      }
+    },
+  );
+
   context.subscriptions.push(
     togglePipeCommand,
     launchAddinCommand,
     formatPipesCommand,
+    toggleOutlineCommand,
     registerScopeFeature(context),
   );
 

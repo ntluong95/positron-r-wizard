@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0
+- Feature: Adds a Toggle Outline button to the .R and .qmd file
+- Add the pipe toggle and format pipe button avialable for .qmd file
+
+## 0.0.9
+
+- Fix: Minor correction of incorrect syntax highlighting
+
 ## 0.0.8
 
 - Added: Syntax highlighting for glue string interpolation

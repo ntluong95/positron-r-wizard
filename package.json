@@ -16,7 +16,7 @@
     "wizard",
     "positron"
   ],
-  "version": "0.0.8",
+  "version": "0.1.0",
   "publisher": "ntluong95",
   "repository": {
     "type": "git",
@@ -31,7 +31,8 @@
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:r"
+    "onLanguage:r",
+    "onLanguage:quarto"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -62,7 +63,7 @@
         "command": "positron-r-wizard.formatPipes",
         "title": "Format Pipe",
         "category": "R",
-        "when": "editorLangId == r",
+        "when": "editorLangId == r || editorLangId == quarto",
         "icon": "$(symbol-keyword)",
         "actionBarOptions": {
           "controlType": "button",
@@ -72,12 +73,23 @@
       {
         "command": "positron-r-pipe-toggle.toggle",
         "title": "R Pipe",
-        "when": "editorLangId == r && !config.positron.r.disablePipeUI",
+        "when": "(editorLangId == r || editorLangId == quarto) && !config.positron.r.disablePipeUI",
         "actionBarOptions": {
           "controlType": "toggle",
           "leftTitle": "%>%",
           "rightTitle": "|>",
           "toggled": "config.positron.r.useNativePipe"
+        }
+      },
+      {
+        "command": "positron-r-wizard.toggleOutline",
+        "title": "Toggle Outline",
+        "category": "R",
+        "when": "editorLangId == r || editorLangId == quarto",
+        "icon": "$(list-unordered)",
+        "actionBarOptions": {
+          "controlType": "button",
+          "displayTitle": false
         }
       },
       {
@@ -116,16 +128,21 @@
       "editor/actions/right": [
         {
           "command": "positron-r-wizard.formatPipes",
-          "when": "editorLangId == r && !config.positron.r.disablePipeUI",
+          "when": "(editorLangId == r || editorLangId == quarto) && !config.positron.r.disablePipeUI",
           "group": "wz@3"
         },
         {
           "command": "positron-r-pipe-toggle.toggle",
-          "when": "editorLangId == r && !config.positron.r.disablePipeUI",
+          "when": "(editorLangId == r || editorLangId == quarto) && !config.positron.r.disablePipeUI",
           "group": "wz@4"
         }
       ],
       "editor/actions/left": [
+        {
+          "command": "positron-r-wizard.toggleOutline",
+          "when": "editorLangId == r || editorLangId == quarto",
+          "group": "navigation@45"
+        },
         {
           "command": "r.launchAddinPicker",
           "when": "editorLangId == r",

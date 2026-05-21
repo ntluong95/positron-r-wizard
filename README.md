@@ -77,3 +77,7 @@ Note: The addin list is generated dynamically by running a small R snippet that 
 ## License
 
 This project is licensed under the terms in the `LICENSE` file.
+
+## Author
+
+Luong Nguyen Thanh, Thanh Nguyen Trung
